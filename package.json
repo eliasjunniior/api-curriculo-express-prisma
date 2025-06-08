@@ -2,17 +2,16 @@
   "name": "api-curriculo",
   "version": "1.0.0",
   "description": "API REST para gerenciar currículos",
-  "main": "api/index.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node api/index.js",
-    "dev": "nodemon api/index.js",
+    "start": "node index.js",
+    "dev": "nodemon index.js",
     "prisma:seed": "node prisma/seed.js",
     "prisma:generate": "npx prisma generate",
-    "postinstall": "npx prisma generate",
-    "vercel-build": "npx prisma migrate deploy && npx prisma generate"
+    "postinstall": "npx prisma generate"
   },
-  "keywords": ["api", "rest", "curriculo", "express", "prisma", "postgresql"],
+  "keywords": ["api", "rest", "curriculo", "express", "prisma", "postgresql", "render"],
   "author": "Elias Pereira da Silva Junior",
   "license": "ISC",
   "dependencies": {
