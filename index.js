@@ -1,3 +1,4 @@
+// index.js
 const express = require('express');
 const { PrismaClient } = require('@prisma/client');
 
@@ -7,19 +8,12 @@ const prisma = new PrismaClient();
 app.use(express.json());
 
 // Rotas da API para Currículos (Users)
-
 app.get('/users', async (req, res) => {
   try {
     const users = await prisma.user.findMany({
       include: {
-        contactInfo: true,
-        languages: true,
-        educations: true,
-        experiences: true,
-        skills: true,
-        projects: true,
-        courses: true,
-        events: true,
+        contactInfo: true, languages: true, educations: true, experiences: true,
+        skills: true, projects: true, courses: true, events: true,
       },
     });
     res.json(users);
@@ -35,14 +29,8 @@ app.get('/users/:id', async (req, res) => {
     const user = await prisma.user.findUnique({
       where: { id },
       include: {
-        contactInfo: true,
-        languages: true,
-        educations: true,
-        experiences: true,
-        skills: true,
-        projects: true,
-        courses: true,
-        events: true,
+        contactInfo: true, languages: true, educations: true, experiences: true,
+        skills: true, projects: true, courses: true, events: true,
       },
     });
     if (!user) {
@@ -61,13 +49,7 @@ app.post('/users', async (req, res) => {
   try {
     const newUser = await prisma.user.create({
       data: {
-        firstName,
-        lastName,
-        email,
-        phone,
-        linkedin,
-        github,
-        bio,
+        firstName, lastName, email, phone, linkedin, github, bio,
         contactInfo: contactInfo ? { create: contactInfo } : undefined,
         languages: languages ? { createMany: { data: languages } } : undefined,
         educations: educations ? { createMany: { data: educations } } : undefined,
@@ -78,14 +60,8 @@ app.post('/users', async (req, res) => {
         events: events ? { createMany: { data: events } } : undefined,
       },
       include: {
-        contactInfo: true,
-        languages: true,
-        educations: true,
-        experiences: true,
-        skills: true,
-        projects: true,
-        courses: true,
-        events: true,
+        contactInfo: true, languages: true, educations: true, experiences: true,
+        skills: true, projects: true, courses: true, events: true,
       }
     });
     res.status(201).json(newUser);
@@ -114,14 +90,8 @@ app.put('/users/:id', async (req, res) => {
         } : undefined,
       },
       include: {
-        contactInfo: true,
-        languages: true,
-        educations: true,
-        experiences: true,
-        skills: true,
-        projects: true,
-        courses: true,
-        events: true,
+        contactInfo: true, languages: true, educations: true, experiences: true,
+        skills: true, projects: true, courses: true, events: true,
       }
     });
     res.json(updatedUser);
@@ -162,8 +132,6 @@ app.delete('/users/:id', async (req, res) => {
   }
 });
 
-// Rotas para sub-recursos (Exemplo: Adicionar/Remover Experiências)
-
 app.post('/users/:userId/experiences', async (req, res) => {
   const { userId } = req.params;
   const experienceData = req.body;
@@ -197,17 +165,11 @@ app.delete('/experiences/:id', async (req, res) => {
   }
 });
 
-// Configuração de Porta e Exportação para Vercel
-
 app.get('/', (req, res) => {
   res.send('API de Currículo Express está funcionando!');
 });
 
-module.exports = app;
-
 const PORT = process.env.PORT || 3000;
-if (process.env.NODE_ENV !== 'production') {
-  app.listen(PORT, () => {
-    console.log(`Servidor local rodando em http://localhost:${PORT}`);
-  });
-}
+app.listen(PORT, () => {
+  console.log(`Servidor rodando na porta ${PORT}`);
+});
