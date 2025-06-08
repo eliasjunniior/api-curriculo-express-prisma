@@ -1,0 +1,121 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String       @id @default(uuid())
+  firstName    String
+  lastName     String
+  email        String       @unique
+  phone        String?
+  linkedin     String?
+  github       String?
+  bio          String?
+
+  languages    Language[]
+  educations   Education[]
+  experiences  Experience[]
+  skills       Skill[]
+  projects     Project[]
+  courses      Course[]
+  events       Event[]
+  contactInfo  ContactInfo?
+}
+
+model Language {
+  id          String @id @default(uuid())
+  name        String
+  proficiency String
+
+  userId      String
+  user        User   @relation(fields: [userId], references: [id])
+}
+
+model Education {
+  id          String    @id @default(uuid())
+  degree      String
+  institution String
+  startDate   DateTime
+  endDate     DateTime?
+  description String?
+
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+}
+
+model Experience {
+  id          String    @id @default(uuid())
+  title       String
+  company     String
+  location    String?
+  startDate   DateTime
+  endDate     DateTime?
+  description String?   @db.Text
+
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+}
+
+model Skill {
+  id          String @id @default(uuid())
+  name        String
+  category    String?
+  level       String?
+
+  userId      String
+  user        User   @relation(fields: [userId], references: [id])
+}
+
+model Project {
+  id          String    @id @default(uuid())
+  name        String
+  description String?   @db.Text
+  url         String?
+  repoUrl     String?
+
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+}
+
+model Course {
+  id          String    @id @default(uuid())
+  title       String
+  institution String?
+  startDate   DateTime?
+  endDate     DateTime?
+  duration    String?
+
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+}
+
+model Event {
+  id          String    @id @default(uuid())
+  name        String
+  date        DateTime?
+  location    String?
+  description String?   @db.Text
+
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+}
+
+model ContactInfo {
+  id          String    @id @default(uuid())
+  phone       String?
+  email       String?
+  address     String?
+  city        String?
+  state       String?
+  zipCode     String?
+
+  userId      String    @unique
+  user        User      @relation(fields: [userId], references: [id])
+}
